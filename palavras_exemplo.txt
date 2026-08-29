@@ -1,0 +1,16 @@
+index
+database
+bucket
+overflow
+collision
+pagina
+registro
+busca
+hash
+estrutura
+memoria
+algoritmo
+desempenho
+interface
+arquivo
+chave
