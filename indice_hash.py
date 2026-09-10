@@ -1,6 +1,6 @@
 """Projeto 1 - Implementação visual de um índice hash estático.
 
-Equipe: Davi Klein, Maximus Ulisses, Josué Castro e Janylson Filho.
+Equipe: Davi Klein, Maximus Ulisses, Josué Castro e Janylson Filjo.
 
 O programa não usa hash() do Python. A função hash própria é um FNV-1a
 adaptado para texto UTF-8 e o índice é construído sobre páginas em memória.
@@ -157,9 +157,12 @@ class StaticHashIndex:
                             new_bucket = Bucket(self.nb + self.overflow_bucket_count, self.bucket_capacity)
                             target.overflow.append(new_bucket)
                             self.overflow_bucket_count += 1
-                            self.max_overflow_chain = max(
-                                self.max_overflow_chain, len(primary.overflow)
-                            )
+                            depth = 0
+                            chain_cursor = primary
+                            while chain_cursor.overflow:
+                                depth += 1
+                                chain_cursor = chain_cursor.overflow[-1]
+                            self.max_overflow_chain = max(self.max_overflow_chain, depth)
                         target = target.overflow[-1]
                 target.entries.append(Entry(record, page.number))
 
@@ -514,11 +517,6 @@ class HashIndexApp(tk.Tk):
         lines.extend(f"  {i:>5}: {record}" for i, record in enumerate(shown_records, 1))
         if len(result["records_read"]) > len(shown_records):
             lines.append(f"\n(A exibição foi limitada a {len(shown_records)} registros; o custo considera {len(result['records_read'])} registros lidos.)")
-        # Evita uma caixa de texto gigantesca sem alterar a métrica calculada.
-        if len(result["records_read"]) > 500:
-            header = lines[:8]
-            shown = [f"  {i:>5}: {record}" for i, record in enumerate(result["records_read"][:500], 1)]
-            lines = header + shown + ["\n(A exibição foi limitada a 500 registros.)"]
         self._write_text(self.search_output, "\n".join(lines))
 
     def _format_index_result(self, result: dict) -> str:

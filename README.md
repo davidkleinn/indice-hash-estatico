@@ -32,3 +32,13 @@ python -m unittest -v test_indice_hash.py
 ```
 
 O arquivo `palavras_exemplo.txt` serve para uma execução rápida de demonstração.
+
+## Teste pesado
+
+Para gerar um TXT com 466.000 registros únicos e validar a escala do projeto:
+
+```text
+python teste_pesado.py
+```
+
+O teste cria `dados_teste_pesado.txt`, constrói o índice com página de 50 registros e FR 8, verifica que todas as entradas foram indexadas e compara chaves no início, no meio, no fim e uma chave inexistente. O TXT gerado pode ser carregado na interface gráfica.
